@@ -8,15 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>my-first-blog | MelodyV24的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="java后台开发 HBASE 深度学习">
+  <meta name="description" content="等待/通知机制wait()方法    使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法    需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行">
+<meta name="keywords" content="java后台开发 HBASE 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="my-first-blog">
 <meta property="og:url" content="http://yoursite.com/2018/06/15/my-first-blog/index.html">
 <meta property="og:site_name" content="MelodyV24的个人博客">
+<meta property="og:description" content="等待/通知机制wait()方法    使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法    需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-15T13:37:25.824Z">
+<meta property="og:updated_time" content="2018-06-16T06:08:41.934Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="my-first-blog">
+<meta name="twitter:description" content="等待/通知机制wait()方法    使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法    需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行">
   
     <link rel="alternative" href="/atom.xml" title="MelodyV24的个人博客" type="application/atom+xml">
   
@@ -172,7 +175,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><strong>等待/通知机制</strong><br><em>wait()方法</em><br>    使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。<br>直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，<br>也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，<br>然后从运行状态退出进入等待队列。</p>
+<p><em>notify()方法</em><br>    需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。<br>执行notify()方法后当前线程不会马上释放该对象锁，呈wait（）状态的<br>线程也不能马上获取对象锁，要等到执行notify()方法的线程将程序执行完。</p>
+<p><em>notifyAll()方法</em><br>    让所有处于等待队列中等待同一资源的“全部”线程从等待状态退出，进入<br>可运行状态此时优先级最高的线程首先执行，也可能是随机执行（取决于JVM）。<br>    建线程对象–&gt;调用start()方法，处于Runnable(可运行)状态，抢占到CPU资源则运行，Running状态，二者处于相互切换状态–&gt;调用stop()方法或者线程运行结束则线程销毁。<br>注：<br>1.线程进入Runnable状态有以下5种情况<br>–&gt;调用slee()时间超过指定的休眠时间<br>–&gt;线程调用的阻塞IO已经返回，阻塞方法执行完毕<br>–&gt;线程成功获得试图同步的监视器<br>–&gt;线程正在等待某个通知，其他线程发出通知<br>–&gt;处于挂起的线程调用resume()<br>2.线程出现阻塞的情况<br>调用sleep方法<br>调用阻塞式IO方法，返回前被阻塞<br>试图获得一个同步监视器，但是该监视器被其他线程持有<br>等待某个通知<br>调用suspend()方法将线程挂起</p>
+<p><em>对象锁释放</em><br>1.同步代码执行完毕、2执行过程中遇到异常、3执行wait方法</p>
+<p><strong>生产者/消费者模型</strong><br>两个线程运行时间长短不一，若耗时短的线程想要同耗时长的线程一同结束，则需要join()方法。<br><em>方法join()的两个作用</em><br>使所属线程对象x正常执行run()方法中的代码，而使线程z阻塞，等到线程x运行完销毁之后再继续执行下线程z后面的代码。<br>方法join()具有使线程排队运行的作用。<br>join()与synchronized的区别：join()在内部使用wait()方法进行等待，而synchronized关键字使用的是对象监视器进行作用。<br>join()方法与interrpt()方法遇到会出现异常。<br>join(long)设定等待时间。<br>join(long)的功能是内部使用wait()方法来实现的，其具有释放锁的功能(此时其他线程可以调用该代码块)。而Thread.sleep(long)方法则不会释放锁。</p>
+<p><strong>类ThreadLocal的使用</strong><br>作用：实现每一个线程都拥有自己变量。变量的隔离性。<br>ThreadLocal.get();(获取值)   ThreadLocal.set()(设置值);<br>ThreadLocal.get()第一次调用会返回null值，ThreadLocal重写InitialValue()方法后即可对ThreadLocal.get()获取的值进行初始化。</p>
+<p><strong>类InheritableThreadLocal的使用</strong><br>使用inheritableThreadLocal类可以让子线程从父线程中取得值。(子线程在取值的过程中，主线程的值发生更改，取的值依然是旧值。)</p>
+
       
 
       
