@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>java多线程线程间通信 | MelodyV24的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="等待/通知机制wait()方法使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify()">
+  <meta name="description" content="等待/通知机制wait()方法使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法 或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify(">
 <meta name="keywords" content="java后台开发 HBASE 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java多线程线程间通信">
 <meta property="og:url" content="http://yoursite.com/2018/06/15/my-first-blog/index.html">
 <meta property="og:site_name" content="MelodyV24的个人博客">
-<meta property="og:description" content="等待/通知机制wait()方法使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify()">
+<meta property="og:description" content="等待/通知机制wait()方法使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法 或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify(">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-16T06:52:14.088Z">
+<meta property="og:updated_time" content="2018-06-16T07:12:01.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java多线程线程间通信">
-<meta name="twitter:description" content="等待/通知机制wait()方法使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify()">
+<meta name="twitter:description" content="等待/通知机制wait()方法使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法 或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。 notify()方法需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify(">
   
     <link rel="alternative" href="/atom.xml" title="MelodyV24的个人博客" type="application/atom+xml">
   
@@ -175,10 +175,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="等待-通知机制"><a href="#等待-通知机制" class="headerlink" title="等待/通知机制"></a>等待/通知机制</h1><h3 id="wait-方法"><a href="#wait-方法" class="headerlink" title="wait()方法"></a>wait()方法</h3><pre><code>使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。
-</code></pre><h3 id="notify-方法"><a href="#notify-方法" class="headerlink" title="notify()方法"></a>notify()方法</h3><pre><code>需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify()方法后当前线程不会马上释放该对象锁，呈wait（）状态的线程也不能马上获取对象锁，要等到执行notify()方法的线程将程序执行完。
-</code></pre><h3 id="notifyAll-方法"><a href="#notifyAll-方法" class="headerlink" title="notifyAll()方法"></a>notifyAll()方法</h3><pre><code>让所有处于等待队列中等待同一资源的“全部”线程从等待状态退出，进入可运行状态此时优先级最高的线程首先执行，也可能是随机执行（取决于JVM）。建线程对象--&gt;调用start()方法，处于Runnable(可运行)状态，抢占到CPU资源则运行，Running状态，二者处于相互切换状态--&gt;调用stop()方法或者线程运行结束则线程销毁。
-</code></pre><h3 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h3><h4 id="1-线程进入Runnable状态有以下5种情况"><a href="#1-线程进入Runnable状态有以下5种情况" class="headerlink" title="1.线程进入Runnable状态有以下5种情况"></a>1.线程进入Runnable状态有以下5种情况</h4><p>–&gt;调用slee()时间超过指定的休眠时间<br>–&gt;线程调用的阻塞IO已经返回，阻塞方法执行完毕<br>–&gt;线程成功获得试图同步的监视器<br>–&gt;线程正在等待某个通知，其他线程发出通知<br>–&gt;处于挂起的线程调用resume()</p>
+        <h1 id="等待-通知机制"><a href="#等待-通知机制" class="headerlink" title="等待/通知机制"></a>等待/通知机制</h1><h3 id="wait-方法"><a href="#wait-方法" class="headerlink" title="wait()方法"></a>wait()方法</h3><pre><code>使当前执行代码的进程进行等待，该方法用于将当前线程置于“预执行队列中”。直到接到被通知被中断的消息。调用wait()方法之前需要获取该对象的对象级别锁，也就是只能在同步方法
+</code></pre><p>或者同步块中调用wait方法。调用方法时候释放共享资源的锁，然后从运行状态退出进入等待队列。</p>
+<h3 id="notify-方法"><a href="#notify-方法" class="headerlink" title="notify()方法"></a>notify()方法</h3><pre><code>需要在同步方法或者同步代码块中调用，调用前，线程也需获得对象锁。执行notify()方法后当前线程不会马上释放该对象锁，呈wait（）状态的线程也不能马上获取对象锁，要等到执行
+</code></pre><p>notify()方法的线程将程序执行完。</p>
+<h3 id="notifyAll-方法"><a href="#notifyAll-方法" class="headerlink" title="notifyAll()方法"></a>notifyAll()方法</h3><pre><code>让所有处于等待队列中等待同一资源的“全部”线程从等待状态退出，进入可运行状态此时优先级最高的线程首先执行，也可能是随机执行（取决于JVM）。建线程对象--&gt;调用start()方法，
+</code></pre><p>处于Runnable(可运行)状态，抢占到CPU资源则运行，Running状态，二者处于相互切换状态–&gt;调用stop()方法或者线程运行结束则线程销毁。</p>
+<h3 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h3><h4 id="1-线程进入Runnable状态有以下5种情况"><a href="#1-线程进入Runnable状态有以下5种情况" class="headerlink" title="1.线程进入Runnable状态有以下5种情况"></a>1.线程进入Runnable状态有以下5种情况</h4><p>–&gt;调用slee()时间超过指定的休眠时间<br>–&gt;线程调用的阻塞IO已经返回，阻塞方法执行完毕<br>–&gt;线程成功获得试图同步的监视器<br>–&gt;线程正在等待某个通知，其他线程发出通知<br>–&gt;处于挂起的线程调用resume()</p>
 <h4 id="2-线程出现阻塞的情况"><a href="#2-线程出现阻塞的情况" class="headerlink" title="2.线程出现阻塞的情况"></a>2.线程出现阻塞的情况</h4><p>调用sleep方法<br>调用阻塞式IO方法，返回前被阻塞<br>试图获得一个同步监视器，但是该监视器被其他线程持有<br>等待某个通知<br>调用suspend()方法将线程挂起</p>
 <h3 id="对象锁释放"><a href="#对象锁释放" class="headerlink" title="对象锁释放"></a>对象锁释放</h3><p>1.同步代码执行完毕、2执行过程中遇到异常、3执行wait方法</p>
 <h1 id="生产者-消费者模型"><a href="#生产者-消费者模型" class="headerlink" title="生产者/消费者模型"></a>生产者/消费者模型</h1><p>两个线程运行时间长短不一，若耗时短的线程想要同耗时长的线程一同结束，则需要join()方法。</p>
