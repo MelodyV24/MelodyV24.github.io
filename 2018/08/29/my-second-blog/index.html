@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>单例模式与多线程 | MelodyV24的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。 ##延迟加载/懒汉模式调用get()方法之后才创建实例–&amp;gt; 存在情况:在多线程情况下并非单例 ###解决方案1：方法加锁但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。            synchronized public static MyObject getInstanc">
+  <meta name="description" content="单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。 延迟加载/懒汉模式调用get()方法之后才创建实例–&amp;gt; 存在情况:在多线程情况下并非单例 解决方案1：方法加锁但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。            synchronized public static MyObject getInstance() {">
 <meta name="keywords" content="java后台开发 HBASE 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单例模式与多线程">
 <meta property="og:url" content="http://yoursite.com/2018/08/29/my-second-blog/index.html">
 <meta property="og:site_name" content="MelodyV24的个人博客">
-<meta property="og:description" content="单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。 ##延迟加载/懒汉模式调用get()方法之后才创建实例–&amp;gt; 存在情况:在多线程情况下并非单例 ###解决方案1：方法加锁但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。            synchronized public static MyObject getInstanc">
+<meta property="og:description" content="单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。 延迟加载/懒汉模式调用get()方法之后才创建实例–&amp;gt; 存在情况:在多线程情况下并非单例 解决方案1：方法加锁但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。            synchronized public static MyObject getInstance() {">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-29T01:41:32.615Z">
+<meta property="og:updated_time" content="2018-08-29T01:44:12.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式与多线程">
-<meta name="twitter:description" content="单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。 ##延迟加载/懒汉模式调用get()方法之后才创建实例–&amp;gt; 存在情况:在多线程情况下并非单例 ###解决方案1：方法加锁但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。            synchronized public static MyObject getInstanc">
+<meta name="twitter:description" content="单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。 延迟加载/懒汉模式调用get()方法之后才创建实例–&amp;gt; 存在情况:在多线程情况下并非单例 解决方案1：方法加锁但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。            synchronized public static MyObject getInstance() {">
   
     <link rel="alternative" href="/atom.xml" title="MelodyV24的个人博客" type="application/atom+xml">
   
@@ -176,12 +176,27 @@
     <div class="article-entry" itemprop="articleBody">
       
         <pre><code>单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
-</code></pre><p>##延迟加载/懒汉模式<br>调用get()方法之后才创建实例<br>–&gt; 存在情况:在多线程情况下并非单例</p>
-<p>###解决方案1：方法加锁<br>但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。<br>            synchronized public static MyObject getInstance() {<br>                try {<br>                    if (myObject != null) {<br>                    } else {<br>                        // 模拟在创建对象之前做一些准备性的工作<br>                        Thread.sleep(3000);<br>                        myObject = new MyObject();<br>                    }<br>                    } catch (InterruptedException e) {<br>                        e.printStackTrace();<br>                }<br>                return myObject;<br>            }</p>
-<p>###解决方案2：同步代码块<br>但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。<br>            public static MyObject getInstance() {<br>                try {<br>                    synchronized （MyObject.class）<br>                    {<br>                        if (myObject != null) {<br>                        } else {<br>                            // 模拟在创建对象之前做一些准备性的工作<br>                            Thread.sleep(3000);<br>                            myObject = new MyObject();<br>                        }<br>                        } catch (InterruptedException e) {<br>                            e.printStackTrace();<br>                    }<br>                    return myObject;<br>                }<br>                }</p>
-<p>###解决办法3：针对某些重要的代码进行单独的同步，其他代码则无需同步。<br>                public static MyObject getInstance() {<br>                    try {<br>                        if (myObject != null) {<br>                        } else {<br>                        // 模拟在创建对象之前做一些准备性的工作<br>                            Thread.sleep(3000);<br>                            synchronized （MyObject.class）{<br>                            myObject = new MyObject();<br>                        }<br>                        }<br>                        } catch (InterruptedException e) {<br>                            e.printStackTrace();<br>                    }<br>                    return myObject;<br>                }</p>
-<p>###解决方案4：静态内置类实现单例模式。<br>                public class MyObject {</p>
-<pre><code>    // 内部类方式
+</code></pre><h2 id="延迟加载-懒汉模式"><a href="#延迟加载-懒汉模式" class="headerlink" title="延迟加载/懒汉模式"></a>延迟加载/懒汉模式</h2><p>调用get()方法之后才创建实例<br>–&gt; 存在情况:在多线程情况下并非单例</p>
+<h3 id="解决方案1：方法加锁"><a href="#解决方案1：方法加锁" class="headerlink" title="解决方案1：方法加锁"></a>解决方案1：方法加锁</h3><p>但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。<br>            synchronized public static MyObject getInstance() {<br>                try {<br>                    if (myObject != null) {<br>                    } else {<br>                        // 模拟在创建对象之前做一些准备性的工作<br>                        Thread.sleep(3000);<br>                        myObject = new MyObject();<br>                    }<br>                    } catch (InterruptedException e) {<br>                        e.printStackTrace();<br>                }<br>                return myObject;<br>            }</p>
+<h3 id="解决方案2：同步代码块"><a href="#解决方案2：同步代码块" class="headerlink" title="解决方案2：同步代码块"></a>解决方案2：同步代码块</h3><p>但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。<br>            public static MyObject getInstance() {<br>                try {<br>                    synchronized （MyObject.class）<br>                    {<br>                        if (myObject != null) {<br>                        } else {<br>                            // 模拟在创建对象之前做一些准备性的工作<br>                            Thread.sleep(3000);<br>                            myObject = new MyObject();<br>                        }<br>                        } catch (InterruptedException e) {<br>                            e.printStackTrace();<br>                    }<br>                    return myObject;<br>                }<br>                }</p>
+<h3 id="解决办法3：针对某些重要的代码进行单独的同步，其他代码则无需同步。"><a href="#解决办法3：针对某些重要的代码进行单独的同步，其他代码则无需同步。" class="headerlink" title="解决办法3：针对某些重要的代码进行单独的同步，其他代码则无需同步。"></a>解决办法3：针对某些重要的代码进行单独的同步，其他代码则无需同步。</h3><pre><code>public static MyObject getInstance() {
+    try {
+        if (myObject != null) {
+        } else {
+        // 模拟在创建对象之前做一些准备性的工作
+            Thread.sleep(3000);
+            synchronized （MyObject.class）{
+            myObject = new MyObject();
+        }
+        }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+    }
+    return myObject;
+}
+</code></pre><h3 id="解决方案4：静态内置类实现单例模式。"><a href="#解决方案4：静态内置类实现单例模式。" class="headerlink" title="解决方案4：静态内置类实现单例模式。"></a>解决方案4：静态内置类实现单例模式。</h3><pre><code>public class MyObject {
+
+    // 内部类方式
     private static class MyObjectHandler {
     private static MyObject myObject = new MyObject();
     }
@@ -193,8 +208,7 @@
     return MyObjectHandler.myObject;
     }
 }
-</code></pre><p>##单例模式VS静态类：</p>
-<ol>
+</code></pre><h2 id="单例模式VS静态类："><a href="#单例模式VS静态类：" class="headerlink" title="单例模式VS静态类："></a>单例模式VS静态类：</h2><ol>
 <li><p>单例可以继承和被继承，方法可以被override，而静态方法不可以。</p>
 </li>
 <li><p>静态方法中产生的对象会在执行后被释放，进而被GC清理，不会一直存在于内存中。</p>
