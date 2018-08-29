@@ -153,6 +153,101 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-my-second-blog" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/29/my-second-blog/">单例模式与多线程</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/29/my-second-blog/" class="archive-article-date">
+  	<time datetime="2018-08-29T01:25:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>单例模式确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
+</code></pre><p>##延迟加载/懒汉模式<br>调用get()方法之后才创建实例<br>–&gt; 存在情况:在多线程情况下并非单例</p>
+<p>###解决方案1：方法加锁<br>但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。<br>            synchronized public static MyObject getInstance() {<br>                try {<br>                    if (myObject != null) {<br>                    } else {<br>                        // 模拟在创建对象之前做一些准备性的工作<br>                        Thread.sleep(3000);<br>                        myObject = new MyObject();<br>                    }<br>                    } catch (InterruptedException e) {<br>                        e.printStackTrace();<br>                }<br>                return myObject;<br>            }</p>
+<p>###解决方案2：同步代码块<br>但是这样效率低下，下一个线程想要取得对象需要等待上一个线程释放锁之后才可以继续进行。<br>            public static MyObject getInstance() {<br>                try {<br>                    synchronized （MyObject.class）<br>                    {<br>                        if (myObject != null) {<br>                        } else {<br>                            // 模拟在创建对象之前做一些准备性的工作<br>                            Thread.sleep(3000);<br>                            myObject = new MyObject();<br>                        }<br>                        } catch (InterruptedException e) {<br>                            e.printStackTrace();<br>                    }<br>                    return myObject;<br>                }<br>                }</p>
+<p>###解决办法3：针对某些重要的代码进行单独的同步，其他代码则无需同步。<br>                public static MyObject getInstance() {<br>                    try {<br>                        if (myObject != null) {<br>                        } else {<br>                        // 模拟在创建对象之前做一些准备性的工作<br>                            Thread.sleep(3000);<br>                            synchronized （MyObject.class）{<br>                            myObject = new MyObject();<br>                        }<br>                        }<br>                        } catch (InterruptedException e) {<br>                            e.printStackTrace();<br>                    }<br>                    return myObject;<br>                }</p>
+<p>###解决方案4：静态内置类实现单例模式。<br>                public class MyObject {</p>
+<pre><code>    // 内部类方式
+    private static class MyObjectHandler {
+    private static MyObject myObject = new MyObject();
+    }
+
+    private MyObject() {
+    }
+
+    public static MyObject getInstance() {
+    return MyObjectHandler.myObject;
+    }
+}
+</code></pre><p>##单例模式VS静态类：</p>
+<ol>
+<li><p>单例可以继承和被继承，方法可以被override，而静态方法不可以。</p>
+</li>
+<li><p>静态方法中产生的对象会在执行后被释放，进而被GC清理，不会一直存在于内存中。</p>
+</li>
+<li><p>静态类会在第一次运行时初始化，单例模式可以有其他的选择，即可以延迟加载。</p>
+</li>
+<li><p>基于2， 3条，由于单例对象往往存在于DAO层（例如sessionFactory），如果反复的初始化和释放，则会占用很多资源，而使用单例模式将其常驻于内存可以更加节约资源。</p>
+</li>
+<li><p>静态方法有更高的访问效率。</p>
+</li>
+<li><p>单例模式很容易被测试。</p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/29/my-second-blog/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-my-first-blog" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
